@@ -84,14 +84,10 @@ git submodule update --init --recursive
 
 Наконец, откройте файл `solvespace.sln` в каталоге сборки. Вам нужно создать только два проекта, сначала `slvs_static_excp`, а затем` _slvs`. После завершения скопируйте вывод в следующее место в `asm / py_slvs`
 ```
-asm / slvs /
-   
-    /src/swig/python/slvs.py
-asm / slvs /
-    
-     /src/swig/python/Release/_slvs.pyd 
-``` 
-     
+asm/slvs/<your_build_directory>/src/swig/python/slvs.py
+asm/slvs/<your_build_directory>/src/swig/python/Release/_slvs.pyd
+```     
+
 Если вы хотите создать отладочную версию, либо загрузите библиотеки отладки Python, либо поместите каталог FreeCAD libpack в переменную среды PATH перед настройкой CMake, чтобы CMake мог найти библиотеку Python отладочной версии. После сборки вы должны переименовать _slvs.pyd в _slvs_d.pyd перед копированием в asm / py_slvs.
 
 ## Сборка для MacOS
@@ -101,10 +97,10 @@ asm / slvs /
 Предполагая, что вы установили пакет FreeCAD в `~ / some / place / FreeCAD.app`, затем клонируйте репозиторий Assembly3 в` ~ / some / place / FreeCAD.app / Contents / Ext / freecad / `. И, что очень важно, убедитесь, что вы назвали каталог клонов __asm3__. После этого проверьте субмодуль `slvs` и все его собственные субмодули.
 
 ```
-cd ~ / some / place / FreeCAD.app / Conntents / Ext / freecad / asm3
-git обновление подмодуля --init slvs
+cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
+git submodule update --init slvs
 cd slvs
-git обновление подмодуля --init --recursive
+git submodule update --init --recursive
 ```
 
 Используйте следующую команду для настройки и сборки
@@ -113,23 +109,24 @@ git обновление подмодуля --init --recursive
 mkdir build
 cd build
 cmake \
--DCMAKE_BUILD_TYPE = Выпуск \
--DBUILD_PYTHON = 1 \
--DPYTHON_EXECUTABLE: FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \
+-DCMAKE_BUILD_TYPE=Release \
+-DBUILD_PYTHON=1 \
+-DPYTHON_EXECUTABLE:FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \
 -DPYTHON_INCLUDE_DIR=/usr/local/opt/python@2/Frameworks/Python.framework/Headers/ \
--DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib \
+-DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib  \
 -DPython_FRAMEWORKS=/usr/local/opt/python@2/Frameworks/Python.framework/ ..
+
 make _slvs
 ```
 
 После этого создайте каталог с именем `py_slvs_mac` в` asm3` и скопируйте результаты.
 
 ```
-cd ~ / some / place / FreeCAD.app / Conntents / Ext / freecad / asm3
+cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
 mkdir py_slvs_mac
-коснитесь py_slvs_mac / __ init__.py
-cp slvs / build / src / swig / python / _slvs.so py_slvs_mac /
-cp slvs / build / src / swig / python / slvs.py py_slvs_mac /
+touch py_slvs_mac/__init__.py
+cp slvs/build/src/swig/python/_slvs.so py_slvs_mac/
+cp slvs/build/src/swig/python/slvs.py py_slvs_mac/
 ```
 
 Наконец, вы должны сделать `_slvs.so` перемещаемым, чтобы иметь возможность загружать его в пакет FreeCAD, с помощью следующей команды
@@ -137,9 +134,9 @@ cp slvs / build / src / swig / python / slvs.py py_slvs_mac /
 ```
 cd py_slvs_mac
 install_name_tool -id "_slvs.so" _slvs.so
-install_name_tool -add_rpath "@loader_path /../../../../ lib /" _slvs.so
+install_name_tool -add_rpath "@loader_path/../../../../lib/" _slvs.so
 install_name_tool -change \
-    "/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/Python" "@ rpath / Python" _slvs.so
+    "/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/Python" "@rpath/Python" _slvs.so
 ```
 
 Последняя команда изменяет путь к связанной библиотеке относительно динамического загрузчика библиотеки пакета. Если вы использовали другую конфигурацию CMake, вы можете узнать путь к вашей связанной библиотеке, используя следующую команду
@@ -160,18 +157,18 @@ SciPy предлагает десяток различных [минимизац
 
 | Алгоритм | Время |
 | --------- | ---- |
-| SolveSpace (как ссылка) | 0,006 с |
-| Нелдер-Мид | Не сходятся |
-| Пауэлл | 7,8 с |
-| CG | 10 + 37s <sup> [1] (# f1) </sup> |
-| BFGS | 10 + 0.8 <sup> [1] (# f1) </sup> |
-| Ньютон-CG | 10 + 61 + 0.5s <sup>[2ght(#f2),</sup> <sup> [3] (# f3) </sup> |
-| L-BFGS-B | 10 + 1.5s <sup>[1ght(#f1),</sup> <sup> [3] (# f3) </sup> |
-| TNC | 10 + 0.8s <sup> [1] (# f1) </sup> |
-| COBYLA | 0,2 с <sup> [3] (# f3) </sup> |
-| SLSQP | 10 + 0,3 <sup>[1 ](#f1),</sup> <sup> [3] (# f3) </sup> |
-| изогнутый | 10 + 61 +? S <sup> [2] (# f2) </sup> Не удалось решить, ошибка linalg |
-| траст-нкг | 10 + 61 + 1.5s <sup> [2] (# f2) </sup> |
+| SolveSpace (as reference) | 0.006s |
+| Nelder-Mead | Not converge |
+| Powell | 7.8s |
+| CG | 10+37s <sup>[1](#f1)</sup> |
+| BFGS | 10+0.8 <sup>[1](#f1)</sup> |
+| Newton-CG | 10+61+0.5s <sup>[2](#f2),</sup><sup>[3](#f3)</sup> |
+| L-BFGS-B | 10+1.5s <sup>[1](#f1),</sup><sup>[3](#f3)</sup> |
+| TNC | 10+0.8s <sup>[1](#f1)</sup> |
+| COBYLA | 0.2s <sup>[3](#f3)</sup> |
+| SLSQP | 10+0.3 <sup>[1](#f1),</sup><sup>[3](#f3)</sup> |
+| dogleg | 10+61+?s <sup>[2](#f2)</sup> Failed to solve, linalg error |
+| trust-ncg | 10+61+1.5s <sup>[2](#f2)</sup> |
 
 <b name = "f1"> [1] </b> Включая вычисление матрицы Якоби (10 в этом тестовом примере), которое реализовано с использованием sympy lambdify с numpy.
 
