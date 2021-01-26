@@ -1,39 +1,42 @@
-When dealing with complex assemblies, it become increasingly difficult to navigate among various parts and hierarchies. `Assembly3` offers a few tools to help with this.
 
-# Selection Stack
 
-The _Selection Stack_ is a new core functionality that records the user selection before and after navigational jump. `Assembly3` exposed all current supported navigation command in the new navigation toolbar, which are introduced in the sections below. The usage of back and forward command ![Back](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/sel-back.svg?sanitize=true) ![Forward](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/sel-forward.svg?sanitize=true)  is basically the same as those in a web browser.
+При работе со сложными сборками становится все труднее перемещаться между различными частями и иерархиями. Assembly3 предлагает несколько инструментов, чтобы помочь в этом.
 
-# Relation Group
+# Стек выбора
 
-There are always three group objects in each `Assembly` container, the first of which is the constraint group. This group contains the constraints that hold all the parts of this assembly together. Sometimes, it is not obvious which part objects are involved in which constraints. There is a hidden forth _relation group_ containing the _relation_ objects. There is one relation object for each part object of the assembly, and each relation contains a list of constraints that are related in its representing part. In case the part is an array, then its corresponding relation will contain child relations each corresponding to an array element.
+_Selection Stack_ - это новая основная функция, которая записывает выбор пользователя до и после перехода. `Assembly3` предоставил все текущие поддерживаемые команды навигации на новой панели инструментов навигации, которые представлены в разделах ниже. Использование команд назад и вперед! [Назад] (../../ FreeCAD / raw / LinkStage3 / src / Gui / Icons / sel-back.svg? Sanitize = true)! [Вперед] (../ .. /FreeCAD/raw/LinkStage3/src/Gui/Icons/sel-forward.svg?sanitize=true) в основном то же самое, что и в веб-браузере.
 
-To reveal the relation group, select any part object and click ![Relation](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_GotoRelation.svg?sanitize=true). It is not necessary to select the root part object. You can select any child geometry in the 3D view, and click that button to go to the top level assembly's relation object corresponding to the second level part object.
+# Группа отношений
 
-Alternatively, you can select any constraint object, and click the same button to locate the same constraint object under the relation.
+В каждом контейнере Assembly всегда есть три групповых объекта, первый из которых является группой ограничений. Эта группа содержит ограничения, удерживающие вместе все части этой сборки. Иногда неочевидно, какие части объектов задействованы в каких ограничениях. Есть скрытая четвертая _relation group_, содержащая _relation_ объекты. Для каждого объекта детали сборки существует один объект отношения, и каждое отношение содержит список ограничений, связанных в представляющей его части. Если часть является массивом, то соответствующее ей отношение будет содержать дочерние отношения, каждое из которых соответствует элементу массива.
 
-Although relation objects take only small amount of resources, they do take extra recomputation time. You can safely delete the entire relation group if they are not needed, and bring them back at any time using the above methods.
+Чтобы отобразить группу отношений, выберите любой объект детали и щелкните! [Связь] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_GotoRelation.svg? Sanitize = true). Необязательно выбирать объект корневой части. Вы можете выбрать любую дочернюю геометрию на 3D-виде и нажать эту кнопку, чтобы перейти к объекту связи сборки верхнего уровня, соответствующему объекту детали второго уровня.
 
-[[images/relation-group.gif]]
+В качестве альтернативы вы можете выбрать любой объект ограничения и нажать ту же кнопку, чтобы найти тот же объект ограничения в отношении.
 
-# Toggle Part Visibility
+Хотя объекты отношения требуют лишь небольшого количества ресурсов, они требуют дополнительного времени на пересчет. Вы можете безопасно удалить всю группу отношений, если они не нужны, и вернуть их в любое время, используя вышеуказанные методы.
 
-When working with multi-hierarchy assemblies, you may want to toggle the visibility of some part object, but find it tedious to have to scroll the tree up and down to locate the root object of the part. This task can be simplified by clicking ![Vis](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_TogglePartVisibility.svg?sanitize=true). Select any geometry in the 3D view that belongs to the part object you want to hide, then click this button. It will find the root part object, collapse the tree item, and then hide the object.
+[[images / Relationship-group.gif]]
 
-[[images/toggle-part-vis.gif]]
+# Переключить видимость детали
 
-# Link Selection
+При работе со сборками с несколькими иерархиями вы можете захотеть переключить видимость какого-либо объекта детали, но вам будет утомительно прокручивать дерево вверх и вниз, чтобы найти корневой объект детали. Эту задачу можно упростить, щелкнув! [Vis] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_TogglePartVisibility.svg? Sanitize = true). Выберите любую геометрию в 3D-виде, которая принадлежит объекту детали, который вы хотите скрыть, затем нажмите эту кнопку. Он найдет объект корневой части, свернет элемент дерева, а затем скроет объект.
 
-There are a few toolbar buttons for easy link navigation.
+[[изображения / toggle-part-vis.gif]]
 
-When select a link, you can click ![LinkSelect](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/LinkSelect.svg?sanitize=true) to jump to the linked object. You can spot a link by the small arrow in the left bottom of its icon, like [[images/link-object.png]].
+# Выбор ссылки
 
-For this to work better on external links, you may want to turn on tree sync view function, by right click any where in the tree view, and select  _Tree view options -> Sync view_. This option is not on by default, because it may disturb existing user's work flow. Once you get used to it, you'll find it to be very useful, especially working on multi-document projects.
+На панели инструментов есть несколько кнопок для удобной навигации по ссылкам.
 
-Even if the object itself is not a link, but from an external document, and is brought in by some link, you can use the same button to jump into that external document. You can spot an external object by the small arrow in the right bottom of its icon, like [[images/external-object.png]].
+При выборе ссылки вы можете щелкнуть! [LinkSelect] (../../ FreeCAD / raw / LinkStage3 / src / Gui / Icons / LinkSelect.svg? Sanitize = true), чтобы перейти к связанному объекту. Вы можете определить ссылку по маленькой стрелке в левом нижнем углу ее значка, например [[images / link-object.png]].
 
-In case the link points to another link, you can use ![LinkSelectFinal](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/LinkSelectFinal.svg?sanitize=true) to directly jump to the final object. The `ElementLink` and `Element` in `Assembly3` are multi-level links to link the constraining element through any intermediate sub-assembly all the way till the deepest part model object. You can use this button to easily find the actual object owning the geometry element.
+Чтобы это лучше работало с внешними ссылками, вы можете включить функцию просмотра дерева синхронизации, щелкнув правой кнопкой мыши любое место в дереве просмотра и выбрав _ Параметры просмотра дерева -> Синхронизировать вид_. Этот параметр не включен по умолчанию, так как он может нарушить рабочий процесс существующего пользователя. Когда вы к нему привыкнете, вы обнаружите, что он очень полезен, особенно при работе над многодокументными проектами.
 
-You can use  ![LinkSelectAll](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/LinkSelectAll.svg?sanitize=true) to find out all links that are linked to the current selected object.
+Даже если сам объект не является ссылкой, а из внешнего документа и введен по какой-либо ссылке, вы можете использовать ту же кнопку для перехода к этому внешнему документу. Вы можете определить внешний объект по маленькой стрелке в правом нижнем углу его значка, например [[images / external-object.png]].
 
-In FreeCAD, the same object can be claimed by multiple features. You can use ![SelectInstance](../../FreeCAD/raw/LinkStage3/src/Gui/Icons/sel-instance.svg?sanitize=true) to expand the tree to show all items corresponding to the current selected object.
+Если ссылка указывает на другую ссылку, вы можете использовать! [LinkSelectFinal] (../../ FreeCAD / raw / LinkStage3 / src / Gui / Icons / LinkSelectFinal.svg? Sanitize = true) для прямого перехода к конечному объекту . «ElementLink» и «Element» в «Assembly3» - это многоуровневые связи, которые связывают ограничивающий элемент через любую промежуточную подсборку на всем пути до самого глубокого объекта модели детали. Вы можете использовать эту кнопку, чтобы легко найти фактический объект, которому принадлежит геометрический элемент.
+
+Вы можете использовать! [LinkSelectAll] (../../ FreeCAD / raw / LinkStage3 / src / Gui / Icons / LinkSelectAll.svg? Sanitize = true), чтобы узнать все ссылки, которые связаны с текущим выбранным объектом.
+
+В FreeCAD один и тот же объект может быть заявлен несколькими функциями. Вы можете использовать! [SelectInstance] (../../ FreeCAD / raw / LinkStage3 / src / Gui / Icons / sel-instance.svg? Sanitize = true), чтобы развернуть дерево и отобразить все элементы, соответствующие текущему выбранному объекту .
+
