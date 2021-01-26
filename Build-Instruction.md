@@ -1,28 +1,31 @@
-At the moment of this writing, Assembly3 only works with a forked FreeCAD [branch](https://github.com/realthunder/FreeCAD/tree/LinkStage3). You need to first checkout this branch and [build](https://github.com/realthunder/FreeCAD/tree/LinkStage3#compiling) it yourself.
 
-After that, checkout this repository directly inside the `Ext/freecad/` directory of your FreeCAD installation or build directory. Be sure to name the directory as **asm3**. The Assembly3 workbench supports multiple constraint solver backends. Currently, there are two backends available, `SolveSpace` and `SymPy + SciPy`, both of which have external dependency. The current focus is to get SolveSpace backend fully working first, with SymPy + SciPy serving as a reference implementation for future exploration. All backends are optional. But, you'll need at least one installed to be able to do constraint based assembling, unless you are fine with manually movement, which is actually doable because Assembly3 provides a powerful mouse dragger.
+
+На момент написания этой статьи Assembly3 работает только с разветвленной [веткой] FreeCAD (https://github.com/realthunder/FreeCAD/tree/LinkStage3). Вам необходимо сначала проверить эту ветку и [построить] (https://github.com/realthunder/FreeCAD/tree/LinkStage3#compiling) самостоятельно.
+
+После этого проверьте этот репозиторий прямо в каталоге `Ext / freecad /` вашей установки FreeCAD или каталога сборки. Обязательно назовите каталог ** asm3 **. Инструментальные средства Assembly3 поддерживают несколько бэкэндов решателя ограничений. В настоящее время доступны два бэкэнда, SolveSpace и SymPy + SciPy, оба из которых имеют внешнюю зависимость. В настоящее время основное внимание уделяется тому, чтобы бэкэнд SolveSpace сначала полностью заработал, а SymPy + SciPy служит эталонной реализацией для будущих исследований. Все бэкенды необязательны. Но вам понадобится по крайней мере один установленный, чтобы иметь возможность выполнять сборку на основе ограничений, если вы не в порядке с перемещением вручную, что на самом деле выполнимо, потому что Assembly3 предоставляет мощный инструмент для перетаскивания мышью.
 
 # SolveSpace
 
-[SolveSpace](http://solvespace.com/) is by itself a standalone CAD software with excellent assembly support. IMO, it has the opposite design principle of FreeCAD, which is big, modular, and fully extensible. SolveSpace, on the other hand  is lean and compact, and does extremely well for what it offers. But, you most likely will find something you want that's missing, and have to seek out other software for help. The constraint solver of SolveSpace is available as a small library for integration by third party software, which gives us the opportunity to bring the best from both worlds. 
+[SolveSpace] (http://solvespace.com/) само по себе является автономным программным обеспечением САПР с отличной поддержкой сборки. ИМО, он имеет противоположный принцип дизайна FreeCAD: большой, модульный и полностью расширяемый. SolveSpace, с другой стороны, прост и компактен и отлично справляется с тем, что предлагает. Но, скорее всего, вы обнаружите, что чего-то не хватает, и вам придется обратиться за помощью к другому программному обеспечению. Решатель ограничений SolveSpace доступен в виде небольшой библиотеки для интеграции сторонним программным обеспечением, что дает нам возможность использовать лучшее из обоих миров.
 
-There is no official python binding of SolveSpace at the moment. Besides, some small modification is required to bring out the SolveSpace assembly functionality into the solver library. You can find my fork at `asm3/slvs` subdirectory. To checkout, 
+Официальной привязки SolveSpace к Python на данный момент нет. Кроме того, требуется небольшая модификация, чтобы включить функциональность сборки SolveSpace в библиотеку решателя. Вы можете найти мою вилку в подкаталоге asm3 / slvs. Проверить,
 
 ```
 cd asm3
 git submodule update --init slvs
 ```
 
-If you are using Ubuntu 16.04 or Windows 64-bit, then you can check out the pre-built python binding at `asm3/py_slvs` subdirectory.
+Если вы используете Ubuntu 16.04 или 64-разрядную версию Windows, вы можете проверить предварительно созданную привязку python в подкаталоге asm3 / py_slvs.
 
 ```
 cd asm3
 git submodule update --init py_slvs
 ```
 
-## Build for Ubuntu
+## Сборка для Ubuntu
 
-To build for Ubuntu, run
+Чтобы собрать для Ubuntu, запустите
+
 
 ```
 apt-get install libpng12-dev libjson-c-dev libfreetype6-dev \
@@ -30,14 +33,14 @@ apt-get install libpng12-dev libjson-c-dev libfreetype6-dev \
                 libgl-dev libglu-dev libglew-dev libspnav-dev cmake
 ```
 
-Make sure to checkout one of the necessary sub module before building.
+Обязательно проверьте один из необходимых субмодулей перед сборкой.
 
 ```
 cd asm3/slvs
 git submodule update --init extlib/libdxfrw 
 ```
 
-To build the python binding only
+Только для создания привязки python
 
 ```
 cd asm3/slvs
@@ -47,11 +50,11 @@ cmake -DBUILD_PYTHON=1 ..
 make _slvs
 ```
 
-After compilation is done, copy `slvs.py` and `_slvs.so` from `asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite existing files if you've checked out the `py_slvs` sub module. If not, then be sure to create an empty file named `__init__.py` at `asm3/py_slvs`. 
+После завершения компиляции скопируйте slvs.py и _slvs.so из asm3 / slvs / build / src / swig / python / в asm3 / py_slvs. Перезаписать существующие файлы, если вы проверили подмодуль `py_slvs`. Если нет, то обязательно создайте пустой файл с именем `__init __. Py` в` asm3 / py_slvs`.
 
-## Cross Compile for Windows
+## Кросс-компиляция для Windows
 
-To build for Windows 64-bit, you have two options. This section shows how to cross compile for Windows on Ubuntu
+Для сборки для 64-разрядной версии Windows у вас есть два варианта. В этом разделе показано, как выполнить кросс-компиляцию для Windows в Ubuntu.
 
 ```
 apt-get install cmake mingw-w64
@@ -62,127 +65,49 @@ cd build_mingw
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=1 -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
 make _slvs
 ```
-After finish, copy `slvs.py` and `_slvs.pyd` from `asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite existing files if you've checked out the `py_slvs` sub module. If not, then be sure to create an empty file named `__init__.py` at `asm3/py_slvs`.
+После завершения скопируйте slvs.py и _slvs.pyd из asm3 / slvs / build / src / swig / python / в asm3 / py_slvs. Перезаписать существующие файлы, если вы проверили подмодуль `py_slvs`. Если нет, то обязательно создайте пустой файл с именем `__init __. Py` в` asm3 / py_slvs`.
 
-## Build on Windows
+## Сборка в Windows
 
-To build on Windows, you should use Visual Studio 2013, the same one FreeCAD uses. Install CMake and Python. If you are building the 64-bit version, make sure you install the Python 64-bit version. I have only tested the build with Python 2.7.14 64-bit. You probably can use the python lib included in FreeCAD  libpack by adding the libpack path to `PATH` environment variable. But it doesn't work for me somehow. CMake only found the debug version python lib in the libpack.
+Для сборки в Windows вы должны использовать Visual Studio 2013, ту же, что и во FreeCAD. Установите CMake и Python. Если вы создаете 64-битную версию, убедитесь, что вы установили 64-битную версию Python. Я тестировал сборку только с 64-разрядной версией Python 2.7.14. Вы, вероятно, можете использовать python lib, включенную в FreeCAD libpack, добавив путь libpack в переменную окружения PATH. Но у меня как-то не получается. CMake нашел только отладочную версию python lib в libpack.
 
-Download and extract the latest [swig](http://www.swig.org/download.html) to some where, and add the path to `PATH` environment variable. I haven't tested to build with the old version swig that's bundled with FreeCAD libpack.
+Загрузите и извлеките последний [swig] (http://www.swig.org/download.html) куда-нибудь и добавьте путь к переменной окружения PATH. Я не тестировал сборку со старой версией swig, которая идет в комплекте с FreeCAD libpack.
 
-Be sure to checkout all the submodules of slvs before building. None of them is actually used, but is still needed to satisfy CMake dependency checking,
+Обязательно проверьте все подмодули slv перед сборкой. Ни один из них фактически не используется, но по-прежнему необходим для проверки зависимостей CMake,
 
 ```
 cd asm3/slvs
 git submodule update --init --recursive
 ```
 
-Run CMake-gui, select a build directory. Add a `BOOL` type entry named `BUILD_PYTHON`, and set it to `true`. Then click `configure` and select Visual Studio 2013 Win64, which is what FreeCAD used. If done without error, click `generate`. 
+Запускаем CMake-gui, выбираем директорию сборки. Добавьте запись типа BOOL с именем BUILD_PYTHON и установите для нее значение true. Затем нажмите `configure` и выберите Visual Studio 2013 Win64, что и использовал FreeCAD. Если все прошло без ошибок, нажмите «сгенерировать».
 
-Finally, open the `solvespace.sln` file in the build directory. You only need to build two projects, first `slvs_static_excp`, and then `_slvs`. Once finished, copy the output at the following location to `asm/py_slvs`
+Наконец, откройте файл `solvespace.sln` в каталоге сборки. Вам нужно создать только два проекта, сначала `slvs_static_excp`, а затем` _slvs`. После завершения скопируйте вывод в следующее место в `asm / py_slvs`
 
-```
-asm/slvs/<your_build_directory>/src/swig/python/slvs.py
-asm/slvs/<your_build_directory>/src/swig/python/Release/_slvs.pyd
-```
-
-If you want to build the Debug version, either download Python debug libraries, or put FreeCAD libpack directory in `PATH` environment variable before configuring CMake, so that CMake can find the debug version Python library. Once built, you must rename `_slvs.pyd` to `_slvs_d.pyd` before copying to `asm/py_slvs`
-
-## Build for MacOS
-
-The pre-build binary for MacOS is located at a [different](../tree/master/py_slvs_mac) sub-module, because MacOS python extension has the same name as Linux one. To build it yourself for use in FreeCAD App bundle, first you need to setup `Homebrew` according to this [wiki](https://www.freecadweb.org/wiki/CompileOnMac), and build FreeCAD App bundle.
-
-Assuming you installed FreeCAD bundle at `~/some/place/FreeCAD.app`, then clone Assembly3 repository at `~/some/place/FreeCAD.app/Contents/Ext/freecad/`. And  very importantly, make sure you name the clone directory as __asm3__. After that checkout `slvs` sub-module, and all of its own sub-modules.
-
-```
-cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
-git submodule update --init slvs
-cd slvs
-git submodule update --init --recursive
-```
-
-Use the following command to configure and build
-
-```
-mkdir build
-cd build
-cmake \
--DCMAKE_BUILD_TYPE=Release \
--DBUILD_PYTHON=1 \
--DPYTHON_EXECUTABLE:FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \
--DPYTHON_INCLUDE_DIR=/usr/local/opt/python@2/Frameworks/Python.framework/Headers/ \
--DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib  \
--DPython_FRAMEWORKS=/usr/local/opt/python@2/Frameworks/Python.framework/ ..
-
-make _slvs
-```
-
-After done, create a directory named `py_slvs_mac` under `asm3`, and copy out the results
-
-```
-cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
-mkdir py_slvs_mac
-touch py_slvs_mac/__init__.py
-cp slvs/build/src/swig/python/_slvs.so py_slvs_mac/
-cp slvs/build/src/swig/python/slvs.py py_slvs_mac/
-```
-
-Finally, you must make `_slvs.so` relocatable in order to be able to load it in FreeCAD bundle, with the following command
-
-```
-cd py_slvs_mac
-install_name_tool -id "_slvs.so" _slvs.so
-install_name_tool -add_rpath "@loader_path/../../../../lib/" _slvs.so
-install_name_tool -change \
-    "/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/Python" "@rpath/Python" _slvs.so
-```
-
-The last command changes the linked library path to be relative to the  bundle's dynamic library loader. In case you used a different `CMake` configuration, you can find out your linked library path using the following command
-
-```
-otool -L _slvs.so
-```
-
-Done, and you can fire up FreeCAD.app and try out Assembly3.
-
-# SymPy + SciPy
-
-The other constraint solver backend uses [SymPy](http://www.sympy.org/) and [SciPy](https://www.scipy.org/). They are mostly Python based, with some native
-acceleration in certain critical parts. The backend implementation models after SolveSpace's solver design, that is, symbolic algebraic + non-linear least square minimization. It can be considered as a python implementation of the SolveSpace's solver. 
- 
-SciPy offers a dozen of different [minimization](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html) 
-algorithms, but most of which cannot compete with SolveSpace performance wise. The following list shows some non-formal testing result using default parameters with the sample [assembly](#create-a-super-assembly-with-external-link-array)  described later
-
-| Algorithm | Time |
-| --------- | ---- |
-| SolveSpace (as reference) | 0.006s |
-| Nelder-Mead | Not converge |
-| Powell | 7.8s |
-| CG | 10+37s <sup>[1](#f1)</sup> |
-| BFGS | 10+0.8 <sup>[1](#f1)</sup> |
-| Newton-CG | 10+61+0.5s <sup>[2](#f2),</sup><sup>[3](#f3)</sup> |
-| L-BFGS-B | 10+1.5s <sup>[1](#f1),</sup><sup>[3](#f3)</sup> |
-| TNC | 10+0.8s <sup>[1](#f1)</sup> |
-| COBYLA | 0.2s <sup>[3](#f3)</sup> |
-| SLSQP | 10+0.3 <sup>[1](#f1),</sup><sup>[3](#f3)</sup> |
-| dogleg | 10+61+?s <sup>[2](#f2)</sup> Failed to solve, linalg error |
-| trust-ncg | 10+61+1.5s <sup>[2](#f2)</sup> |
-
-<b name="f1">[1]</b> Including Jacobian matrix calculation (10s in this test case), which is implemented using sympy lambdify with numpy.
-
-<b name="f2">[2]</b> Including Hessian matrix calculation (61s in this test case), in addition to Jacobian matrix.
-
-<b name="f3">[3]</b> The obtained solution contains small gaps in some of the coincidence constrained points. Incorrect use of the algorithm?
-
-The reasons for writing this backend are,
-
-* SolveSpace is under GPL, which is incompatible with FreeCAD's LGPL, 
-* To gain more insight of the solver system, and easy experimentation with new   ideas due to its python based nature,
-* For future extension, physics based simulation, maybe?
-
-You'll need to install SymPy and SciPy for your platform. 
-
-```
-pip install --upgrade sympy scipy
-```
+`` ''
+asm / slvs /
+   
+    /src/swig/python/slvs.py
+asm / slvs /
+    
+     /src/swig/python/Release/_slvs.pyd ``` 
+     
+If you want to build the Debug version, either download Python debug libraries, or put FreeCAD libpack directory in `PATH` environment variable before configuring CMake, so that CMake can find the debug version Python library. Once built, you must rename `_slvs.pyd` to `_slvs_d.pyd` before copying to `asm/py_slvs` ## Build for MacOS The pre-build binary for MacOS is located at a [different](../tree/master/py_slvs_mac) sub-module, because MacOS python extension has the same name as Linux one. To build it yourself for use in FreeCAD App bundle, first you need to setup `Homebrew` according to this [wiki](https://www.freecadweb.org/wiki/CompileOnMac), and build FreeCAD App bundle. Assuming you installed FreeCAD bundle at `~/some/place/FreeCAD.app`, then clone Assembly3 repository at `~/some/place/FreeCAD.app/Contents/Ext/freecad/`. And very importantly, make sure you name the clone directory as __asm3__. After that checkout `slvs` sub-module, and all of its own sub-modules. ``` cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3 git submodule update --init slvs cd slvs git submodule update --init --recursive ``` Use the following command to configure and build ``` mkdir build cd build cmake \ -DCMAKE_BUILD_TYPE=Release \ -DBUILD_PYTHON=1 \ -DPYTHON_EXECUTABLE:FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \ -DPYTHON_INCLUDE_DIR=/usr/local/opt/python@2/Frameworks/Python.framework/Headers/ \ -DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib \ -DPython_FRAMEWORKS=/usr/local/opt/python@2/Frameworks/Python.framework/ .. make _slvs ``` After done, create a directory named `py_slvs_mac` under `asm3`, and copy out the results ``` cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3 mkdir py_slvs_mac touch py_slvs_mac/__init__.py cp slvs/build/src/swig/python/_slvs.so py_slvs_mac/ cp slvs/build/src/swig/python/slvs.py py_slvs_mac/ ``` Finally, you must make `_slvs.so` relocatable in order to be able to load it in FreeCAD bundle, with the following command ``` cd py_slvs_mac install_name_tool -id "_slvs.so" _slvs.so install_name_tool -add_rpath "@loader_path/../../../../lib/" _slvs.so install_name_tool -change \ "/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/Python" "@rpath/Python" _slvs.so ``` The last command changes the linked library path to be relative to the bundle's dynamic library loader. In case you used a different `CMake` configuration, you can find out your linked library path using the following command ``` otool -L _slvs.so ``` Done, and you can fire up FreeCAD.app and try out Assembly3. # SymPy + SciPy The other constraint solver backend uses [SymPy](http://www.sympy.org/) and [SciPy](https://www.scipy.org/). They are mostly Python based, with some native acceleration in certain critical parts. The backend implementation models after SolveSpace's solver design, that is, symbolic algebraic + non-linear least square minimization. It can be considered as a python implementation of the SolveSpace's solver. SciPy offers a dozen of different [minimization](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html) algorithms, but most of which cannot compete with SolveSpace performance wise. The following list shows some non-formal testing result using default parameters with the sample [assembly](#create-a-super-assembly-with-external-link-array) described later | Algorithm | Time | | --------- | ---- | | SolveSpace (as reference) | 0.006s | | Nelder-Mead | Not converge | | Powell | 7.8s | | CG | 10+37s 
+     [1](#f1) | | BFGS | 10+0.8 
+     [1](#f1) | | Newton-CG | 10+61+0.5s 
+     [2](#f2),
+     [3](#f3) | | L-BFGS-B | 10+1.5s 
+     [1](#f1),
+     [3](#f3) | | TNC | 10+0.8s 
+     [1](#f1) | | COBYLA | 0.2s 
+     [3](#f3) | | SLSQP | 10+0.3 
+     [1](#f1),
+     [3](#f3) | | dogleg | 10+61+?s 
+     [2](#f2) Failed to solve, linalg error | | trust-ncg | 10+61+1.5s 
+     [2](#f2) | 
+     [1] Including Jacobian matrix calculation (10s in this test case), which is implemented using sympy lambdify with numpy. 
+     [2] Including Hessian matrix calculation (61s in this test case), in addition to Jacobian matrix. 
+     [3] The obtained solution contains small gaps in some of the coincidence constrained points. Incorrect use of the algorithm? The reasons for writing this backend are, * SolveSpace is under GPL, which is incompatible with FreeCAD's LGPL, * To gain more insight of the solver system, and easy experimentation with new ideas due to its python based nature, * For future extension, physics based simulation, maybe? You'll need to install SymPy and SciPy for your platform. ``` pip install --upgrade sympy scipy ``` 
+    
+   
 
