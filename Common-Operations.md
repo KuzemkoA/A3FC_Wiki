@@ -8,7 +8,7 @@
 * Select any face of the `Cylinder` or `Cube`, and click   ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
   activate part manual movement. Click any arrow to drag the `Cylinder` on top  of the `Cube`, press the `ESC` key to leave part movement (Alternative:
   right-click `Assembly` in the tree view and click `Finish editing`) 
-  * Select the top face of the `Cube` and (while holding the `CTRL` key) select the bottom   face or edge of the `Cylinder` and then click   ![AddCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)   to create a plane coincidence constraint.
+* Select the top face of the `Cube` and (while holding the `CTRL` key) select the bottom   face or edge of the `Cylinder` and then click   ![AddCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)   to create a plane coincidence constraint.
 * Finally, click   ![Solve](../raw/master/freecad/asm3/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)   to solve the constraint system.
 
 [[images/simple.gif]]
