@@ -1,26 +1,29 @@
-This tutorial is a replication of SolveSpace [linkage](http://solvespace.com/linkage.pl) tutorial. In order to assemble the following linkage system,
 
-[[images/linkage-view.png]]
 
-we are going to build a skeleton sketch as follow,
+Это руководство является копией руководства SolveSpace [ссылка] (http://solvespace.com/linkage.pl). Чтобы собрать следующую систему рычагов,
 
-[[images/linkage-dimensioned.png]]
+[[изображения / linkage-view.png]]
 
-* Switch to Assembly3 workbench
-* Create an empty assembly container
-* Select the newly create assembly object, and click   ![AddWorkplane](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Add_Workplane.svg?sanitize=true)   to add a work plane. Note that you can use any other object with planar edge   or face to define the sketch plane. The Assembly3 work plane is just   a convenience.
-* This is an optional step, change the plane `Width` and `Length` to 100mm, and   then scale and position the 3D view to put the entire plane in the center.   Then hide the plane to not interfere with the draft object editing. The   sizing of the plane is to give you a rough idea of how long the lines should   be. It is suggested to draw the initial sketch close to the final structure   to avoid confusing the solver.
-* Select the new work plane, and click   ![AddSketchPlane](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintSketchPlane.svg?sanitize=true)   to add a `sketchPlane` constraint
-* Now, switch to Draft workbench
-* Add a few wires according to the above picture. You can add one wire for each   colored lines, or you can use multi-segment wires as much as possible to   reduce the number of point coincidence constraints needed later. 
-* This is an optional step. For two point line segment, you can set the   `Length` property of the draft wire to define the length now. For multi-point   poly-lines, you can set the length in later step. 
-* Drag all draft wires into the assembly container.
-* For the green three-point poly-line, you can select any one of the three   points, and click   ![AddLocked](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)   to create a `Locked` constraint to fix that point. 
-* Select the vertical green line segment, and click   ![AddLineVertical](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineVertical.svg?sanitize=true)   to create a `LineVertical` constraint. 
-* Select the horizontal green line segment, and click   ![AddLineHorizontal](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineHorizontal.svg?sanitize=true)   to create a `LineHorizontal` constraint.
-* For each line segment, select and click    ![AddLineLength](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineLength.svg?sanitize=true)   to create a `LineLength` constraint to fix the length. The initial length   parameter is calculated from the selected line. So if you have already set   the draft wire `Length` property, there is nothing else to be done. For other   lines, set the `Length` parameter of the constraint accordingly.
-* Select pairs of points according to the picture above, and click   ![AddPointsCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintPointCoincident.svg?sanitize=true)   to create a `PointsCoincidence` constraint.
-* To trace the movement of an vertex, select it first, and then click   ![Trace](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Trace.svg?sanitize=true).   If you have enabled tracing before, you'll need to disable it first before   selecting a new vertex and enable it again. If you select an edge or face,   then you will be tracing the center point of the shape. If you don't select   any shape before enable tracing, you will be tracing the moving shape.
-* Select any vertex/edge/face you want to move, and click either   ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) or   ![AxialMove](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AxialMove.svg?sanitize=true)   and then drag the arrow to move.
+мы собираемся построить эскиз скелета следующим образом:
 
-[[images/linkage.gif]]
+[[images / linkage-sizesed.png]]
+
+* Переключитесь на верстак Assembly3
+* Создать пустой сборочный контейнер
+* Выберите только что созданный объект сборки и щелкните! [AddWorkplane] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_Add_Workplane.svg? Sanitize = true), чтобы добавить рабочую плоскость. Обратите внимание, что вы можете использовать любой другой объект с плоской кромкой или гранью для определения плоскости эскиза. Рабочая плоскость Assembly3 - это просто удобство.
+* Это необязательный шаг, измените плоскость «Ширина» и «Длина» на 100 мм, а затем масштабируйте и расположите трехмерное изображение, чтобы поместить всю плоскость в центр. Затем скройте плоскость, чтобы не мешать редактированию чернового объекта. Размер плоскости должен дать вам приблизительное представление о том, какой длины должны быть линии. Предлагается нарисовать начальный эскиз близко к окончательной структуре, чтобы не запутать решатель.
+* Выберите новую рабочую плоскость и щелкните! [AddSketchPlane] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintSketchPlane.svg? Sanitize = true), чтобы добавить ограничение `sketchPlane`
+* Теперь переключитесь на верстак Draft
+* Добавьте несколько проводов, как показано на рисунке выше. Вы можете добавить по одному проводу для каждой цветной линии или использовать многосегментные провода, насколько это возможно, чтобы уменьшить количество ограничений на совпадение точек, которые потребуются позже.
+* Это необязательный шаг. Для двухточечного линейного сегмента вы можете установить свойство `Length` уклона провода, чтобы определить длину сейчас. Для многоточечных полилиний вы можете установить длину на более позднем этапе.
+* Перетащите все тяговые провода в сборочный контейнер.
+* Для зеленой трехточечной полилинии вы можете выбрать любую из трех точек и щелкнуть! [AddLocked] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintLock.svg ? sanitize = true), чтобы создать ограничение Locked, чтобы исправить эту точку. 
+* Выберите вертикальный зеленый сегмент линии и нажмите! [AddLineVertical] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintLineVertical.svg? Sanitize = true), чтобы создать ограничение LineVertical. 
+* Выберите горизонтальный зеленый сегмент линии и нажмите! [AddLineHorizontal] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintLineHorizontal.svg? Sanitize = true), чтобы создать ограничение LineHorizontal.
+* Для каждого сегмента линии выберите и щелкните! [AddLineLength] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintLineLength.svg? Sanitize = true), чтобы создать ограничение LineLength для исправления длина. Параметр начальной длины рассчитывается от выбранной строки. Так что, если вы уже установили свойство «Длина» черновой проволоки, больше ничего делать не нужно. Для других строк установите параметр ограничения `Length` соответственно.
+* Выберите пары точек, как показано на рисунке выше, и щелкните! [AddPointsCoincidence] (../ raw / master / freecad / asm3 / Gui / Resources / icons / constraints / Assembly_ConstraintPointCoincident.svg? Sanitize = true), чтобы создать `PointsCoincidence `ограничение.
+* Чтобы отследить движение вершины, сначала выберите ее, а затем щелкните! [Трассировка] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_Trace.svg? Sanitize = true). Если вы включили трассировку раньше, вам нужно сначала отключить ее, прежде чем выбирать новую вершину и снова включить. Если вы выберете кромку или грань, вы начнете обводить центральную точку формы. Если вы не выберете какую-либо фигуру перед включением трассировки, вы будете отслеживать движущуюся фигуру.
+* Выберите любую вершину / ребро / грань, которую вы хотите переместить, и щелкните! [Move] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_Move.svg? Sanitize = true) или! [AxialMove ] (../ raw / master / freecad / asm3 / Gui / Resources / icons / Assembly_AxialMove.svg? sanitize = true), а затем перетащите стрелку для перемещения.
+
+[[изображения / linkage.gif]]
+
